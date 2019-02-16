@@ -17,3 +17,33 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.grid {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin: $pt-grid-size $pt-grid-size 0 0;
+}
+
+.grid-item {
+  // flex: auto;
+  width: calc(25% - 1.5em);
+  margin: 0px 0 $pt-grid-size $pt-grid-size;
+  overflow: hidden;
+}
+
+.previewable {
+  display: block;
+  line-height: 0;
+  overflow: hidden;
+  width: calc(100% + 40px);
+  margin: -20px 0 0 -20px;
+}
+
+video.preview {
+  height: 225px;
+  width: 100%;
+  // width: calc(100% + 40px);
+  // margin: -20px 0 0 -20px;
+  object-fit: cover;
+}

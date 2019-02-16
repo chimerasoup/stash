@@ -1,24 +1,37 @@
 import React from 'react';
 import {
-  Alignment,
   Button,
-  Classes,
-  Navbar,
-  NavbarDivider,
-  NavbarGroup,
-  NavbarHeading,
+  Card,
+  Elevation,
 } from "@blueprintjs/core";
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { SceneCard } from "./scene-card";
+import * as GQL from '../generated-graphql';
 
 type ScenesProps = {}
 type ScenesState = {}
 
+const vars: GQL.FindScenesVariables = {
+  filter: {
+    q: "adria"
+  }
+}
+
 export class Scenes extends React.PureComponent<ScenesProps, ScenesState> {
   public render() {
     return (
-      <span>
-        scenes
-      </span>
+      <GQL.FindScenesComponent variables={vars}>
+        {({ loading, error, data }) => {
+          if (error || loading) return '...';
+
+          return (
+            <div className="grid">
+              {data!.findScenes.scenes.map(scene => (
+                <SceneCard scene={scene} />
+              ))}
+            </div>
+          )
+        }}
+      </GQL.FindScenesComponent>
     );
   }
 }
