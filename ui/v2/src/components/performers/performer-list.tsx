@@ -10,10 +10,10 @@ import {
 } from "@blueprintjs/core";
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 
-type PerformersProps = {}
-type PerformersState = {}
+type PerformerListProps = {}
+type PerformerListState = {}
 
-export class Performers extends React.PureComponent<PerformersProps, PerformersState> {
+export class PerformerList extends React.PureComponent<PerformerListProps, PerformerListState> {
   public render() {
     return (
       <span>

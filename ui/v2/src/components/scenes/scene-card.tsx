@@ -3,7 +3,7 @@ import {
   Card,
   Elevation,
 } from "@blueprintjs/core";
-import * as GQL from '../generated-graphql';
+import * as GQL from '../../generated-graphql';
 import { Link } from 'react-router-dom';
 
 type SceneCardProps = {
@@ -33,13 +33,15 @@ export class SceneCard extends React.PureComponent<SceneCardProps, SceneCardStat
   public render() {
     return (
       <Card className="grid-item" elevation={Elevation.ONE} onMouseEnter={this.onMouseEnter.bind(this)} onMouseLeave={this.onMouseLeave.bind(this)}>
-        <Link to={`/scenes/${this.props.scene.id}`} className="image previewable">
-          <video className="preview" loop poster={this.props.scene.paths.screenshot || ""} ref={this.videoTag}>
+        <Link to={`/scenes/${this.props.scene.id}`} className="image previewable" style={{height: "20px"}}>
+          link
+          {/* <video className="preview" loop poster={this.props.scene.paths.screenshot || ""} ref={this.videoTag}>
             {!!this.props.scene.paths.preview ? <source src={this.props.scene.paths.preview} /> : ''}
-          </video>
+          </video> */}
         </Link>
-        <h5><a href="#">{this.props.scene.title}</a></h5>
+        <h5 className="bp3-heading"><a href="#">{this.props.scene.title}</a></h5>
         <p>{this.props.scene.details}</p>
+        <p>{this.props.scene.path}</p>
       </Card>
     );
   }

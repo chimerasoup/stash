@@ -5,18 +5,19 @@ import {
   Elevation,
 } from "@blueprintjs/core";
 import { SceneCard } from "./scene-card";
-import * as GQL from '../generated-graphql';
+import * as GQL from '../../generated-graphql';
+import { ListFilter } from '../list/ListFilter';
 
-type ScenesProps = {}
-type ScenesState = {}
+type SceneListProps = {}
+type SceneListState = {}
 
 const vars: GQL.FindScenesVariables = {
   filter: {
-    q: "adria"
+    q: ""
   }
 }
 
-export class Scenes extends React.PureComponent<ScenesProps, ScenesState> {
+export class SceneList extends React.PureComponent<SceneListProps, SceneListState> {
   public render() {
     return (
       <GQL.FindScenesComponent variables={vars}>
@@ -24,10 +25,13 @@ export class Scenes extends React.PureComponent<ScenesProps, ScenesState> {
           if (error || loading) return '...';
 
           return (
-            <div className="grid">
-              {data!.findScenes.scenes.map(scene => (
-                <SceneCard scene={scene} />
-              ))}
+            <div>
+              <ListFilter />
+              <div className="grid">
+                {data!.findScenes.scenes.map(scene => (
+                  <SceneCard scene={scene} />
+                ))}
+              </div>
             </div>
           )
         }}
