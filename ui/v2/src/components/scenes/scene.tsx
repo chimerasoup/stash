@@ -9,38 +9,43 @@ import {
   NavbarHeading,
 } from "@blueprintjs/core";
 import { BrowserRouter, Route, Link } from 'react-router-dom';
-import * as GQL from '../../generated-graphql';
+import * as GQL from '../../core/generated-graphql';
+import { ApolloQueryResult } from 'apollo-boost';
+import { getStashService } from '../../core/StashService';
 
 type SceneProps = {
   match: any
 }
 type SceneState = {
-  scene: GQL.SceneDataFragment
+  data: ApolloQueryResult<GQL.FindSceneQuery>
 }
 
 export class Scene extends React.PureComponent<SceneProps, SceneState> {
-  public render() {
+  async componentDidMount() {
+    await this.fetch();
+  }
+
+  private async fetch() {
     const id = this.props.match.params.id
-    const vars: GQL.FindSceneVariables = {
-      id: id
-    }
+    const result = await getStashService().findScene(id);
+    this.setState({data: result});
+  }
+  
+  public render() {
+
+    if (!this.state) return '...';
+    const { loading, data, errors } = this.state.data;
+    if (!!errors) return errors[0].message
+    if (errors || loading) return '...';
+
+    const scene = data.findScene;
+    if (!scene) return '...';
 
     return (
-      <GQL.FindSceneComponent variables={vars}>
-      {({ loading, error, data }) => {
-        if (error) return error.message;
-        if (error || loading || !data) return '...';
-        // this.setState(() => ({ scene: data!.findScene! }))
-        const scene = data.findScene
-        if (!scene) return '...';
-        return (
-          <div>
-            <h1 className="bp3-heading">{scene.title}</h1>
-            {scene.path}
-          </div>
-        )
-      }}
-      </GQL.FindSceneComponent>
+      <div>
+        <h1 className="bp3-heading">{scene.title}</h1>
+        {scene.path}
+      </div>
     );
   }
 }

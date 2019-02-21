@@ -1,70 +1,60 @@
 import React from 'react';
-import {
-  Button,
-  Card,
-  Elevation,
-} from "@blueprintjs/core";
 import { SceneCard } from "./scene-card";
-import * as GQL from '../../generated-graphql';
+import * as GQL from '../../core/generated-graphql';
 import { ListFilter } from '../list/ListFilter';
-import { NamedProps, ChildProps } from 'react-apollo';
+import { SceneListState as ListState, ListFilter as Filter } from '../../models/list';
+import { ApolloQueryResult } from 'apollo-boost';
+import { getStashService } from '../../core/StashService';
 
 type SceneListProps = {}
 type SceneListState = {
-  variables: GQL.FindScenesVariables
+  data: ApolloQueryResult<GQL.FindScenesQuery>
 }
 
-class SceneList extends React.Component<GQL.FindScenesProps<SceneListProps>, SceneListState> {
-  constructor(props: SceneListProps) {
-    super(props);
-    // this.state = {
-    //   variables: {
-    //     filter: {
-    //       q: "",
-    //       per_page: 60
-    //     }
-    //   }
-    // };
-    // this.onChangePageSize = this.onChangePageSize.bind(this);
+export default class SceneList extends React.Component<SceneListProps, SceneListState> {
+  private listState: ListState = new ListState();
+
+  async componentDidMount() {
+    await this.fetch();
   }
 
-  // componentDidUpdate(previousProps: GQL.FindScenesProps<SceneListProps>) {
-  //   if (previousProps.data!.variables.filter!.per_page != 60) return
-  //   this.props.data!.refetch();
-  // }
-
-  private onChangePageSize(pageSize: number) {
-    // let newState = Object.assign({}, this.state);
-    // newState.variables.filter!.per_page = pageSize;
-    // this.setState(newState);
-    if (!this.props.data) return;
-    if (!this.props.data.variables.filter) this.props.data.variables.filter = {}
-    this.props.data.variables.filter.per_page = pageSize;
-    this.props.data.refetch();
+  private async onChangePageSize(pageSize: number) {
+    this.listState.filter.itemsPerPage = pageSize;
+    await this.fetch();
   }
 
-  private onChangeQuery(query: string) {
-    if (!this.props.data) return;
-    if (!this.props.data.variables.filter) this.props.data.variables.filter = {}
-    this.props.data.variables.filter.q = query;
-    this.props.data.refetch();
+  private async onChangeQuery(query: string) {
+    this.listState.filter.searchTerm = query;
+    await this.fetch();
+  }
+
+  private async onChangeFilter(filter: Filter) {
+    this.listState.filter = filter;
+    await this.fetch();
+  }
+
+  private async fetch() {
+    const result = await getStashService().findScenes(this.listState.filter);
+    this.setState({data: result});
   }
 
   public render() {
-    if (!this.props.data) return '...';
-    const { loading, findScenes, error } = this.props.data;
+    if (!this.state) return '...';
+    const { loading, data, errors } = this.state.data;
 
-    if (error || loading) return '...';
-    if (Object.getOwnPropertyNames(findScenes).length === 0) return '...';
-    if (!findScenes) return '...';
+    if (errors || loading) return '...';
+    if (Object.getOwnPropertyNames(data).length === 0) return '...';
+    if (!data) return '...';
 
     return (
       <div>
         <ListFilter
           onChangePageSize={this.onChangePageSize.bind(this)}
-          onChangeQuery={this.onChangeQuery.bind(this)} />
+          onChangeQuery={this.onChangeQuery.bind(this)}
+          filter={this.listState.filter}
+          onChange={this.onChangeFilter.bind(this)} />
         <div className="grid">
-          {findScenes.scenes.map(scene => (
+          {data.findScenes.scenes.map(scene => (
             <SceneCard key={scene.id} scene={scene} />
           ))}
         </div>
@@ -72,15 +62,3 @@ class SceneList extends React.Component<GQL.FindScenesProps<SceneListProps>, Sce
     )
   }
 }
-
-export default GQL.FindScenesHOC<{}, SceneListProps>({
-  options: {
-    variables: {
-      filter: {
-        per_page: 20
-      },
-      scene_filter: {},
-      scene_ids: []
-    }
-  }
-})(SceneList);

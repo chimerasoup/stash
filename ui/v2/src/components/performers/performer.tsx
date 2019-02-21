@@ -10,7 +10,7 @@ import {
   EditableText,
 } from "@blueprintjs/core";
 import { BrowserRouter, Route, Link } from 'react-router-dom';
-import * as GQL from '../../generated-graphql';
+import * as GQL from '../../core/generated-graphql';
 
 type PerformerProps = {
   match: any

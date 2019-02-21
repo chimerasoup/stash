@@ -1,5 +1,5 @@
 /* tslint:disable */
-// Generated in 2019-02-15T14:13:25-08:00
+// Generated in 2019-02-20T15:03:39-08:00
 export type Maybe<T> = T | null;
 
 export interface SceneFilterType {

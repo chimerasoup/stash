@@ -9,26 +9,35 @@ import {
   NavbarHeading,
 } from "@blueprintjs/core";
 import { BrowserRouter, Route, Link } from 'react-router-dom';
-import * as GQL from '../generated-graphql';
+import * as GQL from '../core/generated-graphql';
+import { getStashService } from '../core/StashService';
+import { ApolloQueryResult } from 'apollo-boost';
 
 type StatsProps = {}
-type StatsState = {}
+type StatsState = {
+  data: ApolloQueryResult<GQL.StatsQuery>
+}
 
 export class Stats extends React.PureComponent<StatsProps, StatsState> {
-  public render() {
-    return (
-      <GQL.StatsComponent>
-        {({ loading, error, data }) => {
-          if (error || loading) return '...';
+  async componentDidMount() {
+    await this.fetch();
+  }
 
-          return (
-            <div>
-              <span>Scenes {data!.stats.scene_count}</span>
-              <span>Galleries {data!.stats.gallery_count}</span>
-            </div>
-          )
-        }}
-      </GQL.StatsComponent>
+  private async fetch() {
+    const result = await getStashService().stats();
+    this.setState({data: result});
+  }
+
+  public render() {
+    if (!this.state) return '...';
+    const { loading, data, errors } = this.state.data;
+    if (errors || loading) return '...';
+
+    return (
+      <div>
+        <span>Scenes {data.stats.scene_count}</span>
+        <span>Galleries {data.stats.gallery_count}</span>
+      </div>
     );
   }
 }
