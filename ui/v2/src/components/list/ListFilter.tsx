@@ -94,8 +94,8 @@ export class ListFilter extends React.PureComponent<ListFilterProps, ListFilterS
 
   public render() {
     return (
-      <div>
-        <div style={{display: 'flex', justifyContent: 'center', margin: '10px auto'}}>
+      <>
+        <div className="filter-container">
           <InputGroup
             large={true}
             placeholder="Search..."
@@ -129,12 +129,12 @@ export class ListFilter extends React.PureComponent<ListFilterProps, ListFilterS
         </div>
         <div style={{display: 'flex', justifyContent: 'center', margin: '10px auto'}}>
           {this.props.filter.criteria.map(criterion => (
-            <Tag className="filter-item" itemID={criterion.type.toString()} onRemove={this.onRemoveTag.bind(this)}>
+            <Tag key={criterion.type} className="filter-item" itemID={criterion.type.toString()} onRemove={this.onRemoveTag.bind(this)}>
               {(CriterionType as any)[criterion.type]} with value {criterion.value}
             </Tag>
           ))}
         </div>
-      </div>
+      </>
     );
   }
 }

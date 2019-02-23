@@ -1,5 +1,5 @@
 import React from 'react';
-import { SceneCard } from "./scene-card";
+import { SceneCard } from "./SceneCard";
 import * as GQL from '../../core/generated-graphql';
 import { ListFilter } from '../list/ListFilter';
 import { SceneListState as ListState, ListFilterModel } from '../../models/list-filter';
@@ -7,6 +7,7 @@ import { ApolloQueryResult } from 'apollo-boost';
 import { getStashService } from '../../core/StashService';
 import queryString from 'query-string';
 import { BaseProps } from '../../models/base-props';
+import { Pagination } from '../list/Pagination';
 
 interface SceneListProps extends BaseProps {}
 type SceneListState = {
@@ -37,6 +38,11 @@ export default class SceneList extends React.Component<SceneListProps, SceneList
     await this.fetch();
   }
 
+  private async onChangePage(page: number) {
+    this.listState.filter.currentPage = page;
+    await this.fetch();
+  }
+
   private async fetch() {
     const location = Object.assign({}, this.props.history.location);
     location.search = this.listState.filter.makeQueryParameters();
@@ -45,6 +51,7 @@ export default class SceneList extends React.Component<SceneListProps, SceneList
 
 
     const result = await getStashService().findScenes(this.listState.filter);
+    this.listState.totalCount = result.data.findScenes.count;
     this.setState({data: result});
   }
 
@@ -68,6 +75,11 @@ export default class SceneList extends React.Component<SceneListProps, SceneList
             <SceneCard key={scene.id} scene={scene} />
           ))}
         </div>
+        <Pagination
+          itemsPerPage={this.listState.filter.itemsPerPage}
+          currentPage={this.listState.filter.currentPage}
+          totalItems={this.listState.totalCount}
+          onChangePage={this.onChangePage.bind(this)} />
       </div>
     )
   }

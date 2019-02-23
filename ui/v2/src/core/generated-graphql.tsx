@@ -1,6 +1,6 @@
 /* tslint:disable */
-// Generated in 2019-02-20T15:03:39-08:00
-export type Maybe<T> = T | null;
+// Generated in 2019-02-23T10:25:34-08:00
+export type Maybe<T> = T | undefined;
 
 export interface SceneFilterType {
   /** Filter by rating */

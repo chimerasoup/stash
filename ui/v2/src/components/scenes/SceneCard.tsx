@@ -5,6 +5,7 @@ import {
 } from "@blueprintjs/core";
 import * as GQL from '../../core/generated-graphql';
 import { Link } from 'react-router-dom';
+import { TextUtils } from '../../utils/text';
 
 type SceneCardProps = {
   scene: GQL.SlimSceneDataFragment
@@ -14,7 +15,7 @@ type SceneCardState = {}
 export class SceneCard extends React.PureComponent<SceneCardProps, SceneCardState> {
   private isPlaying = false;
   private isHovering = false;
-  private previewPath: GQL.Maybe<string> = null;
+  private previewPath: GQL.Maybe<string>;
   videoTag: RefObject<HTMLVideoElement>
   constructor(props: SceneCardProps) {
     super(props);
@@ -70,7 +71,7 @@ export class SceneCard extends React.PureComponent<SceneCardProps, SceneCardStat
           </video>
         </Link>
         <h5 className="bp3-heading"><a href="#">{this.props.scene.title}</a></h5>
-        <p>{this.props.scene.details}</p>
+        <p>{TextUtils.truncate(this.props.scene.details, 100, '... (continued)')}</p>
         <p>{this.props.scene.path}</p>
       </Card>
     );

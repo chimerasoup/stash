@@ -5,6 +5,7 @@ generates:
   src/core/generated-graphql.tsx:
     config:
       noNamespaces: true
+      optionalType: "undefined"
     plugins:
       - add: "/* tslint:disable */"
       - time
