@@ -19,7 +19,8 @@ import {
 } from "@blueprintjs/core";
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import { debounce } from 'lodash';
-import { ListFilter as Filter } from '../../models/list';
+import { ListFilter as Filter, Criteria } from '../../models/list';
+import { AddFilter } from './AddFilter';
 
 type ListFilterProps = {
   onChangePageSize: (pageSize: number) => void
@@ -77,6 +78,11 @@ export class ListFilter extends React.PureComponent<ListFilterProps, ListFilterS
     this.props.onChange(this.props.filter);
   }
 
+  private onAddCriteria(criteria: Criteria) {
+    this.props.filter.criterions.push(criteria);
+    this.props.onChange(this.props.filter);
+  }
+
   public render() {
     return (
       <div style={{display: 'flex', justifyContent: 'center', margin: '10px auto'}}>
@@ -107,6 +113,8 @@ export class ListFilter extends React.PureComponent<ListFilterProps, ListFilterS
             </Menu>
           </Popover>
         </ControlGroup>
+
+        <AddFilter filter={this.props.filter} onAddCriteria={this.onAddCriteria.bind(this)} />
       </div>
     );
   }

@@ -14,7 +14,7 @@ class StashService {
   findScenes(filter: ListFilter): Promise<ApolloQueryResult<GQL.FindScenesQuery>> {
     let scene_filter = {};
     // if (!!filter && filter.criteriaFilterOpen) {
-    //   scene_filter = filter.makeSceneFilter();
+      scene_filter = filter.makeSceneFilter();
     // }
     // if (filter.customCriteria) {
     //   filter.customCriteria.forEach(criteria => {
