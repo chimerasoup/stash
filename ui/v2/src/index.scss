@@ -41,6 +41,7 @@ code {
   overflow: hidden;
   width: calc(100% + 40px);
   margin: -20px 0 0 -20px;
+  position: relative;
 }
 
 video.preview {
@@ -55,12 +56,47 @@ video.preview {
   margin: 0 10px;
 }
 
+.tag-item {
+  margin: 5px;
+}
+
 .bp3-popover-content {
   padding: 10px;
+  max-width: 33vw
 }
 
 .filter-container {
   display: flex;
   justify-content: center;
   margin: 10px auto;
+}
+
+.card-section {
+  padding: 5px 0;
+  &.centered {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.rating-5 { background: #FF2F39; }
+.rating-4 { background: $red1; }
+.rating-3 { background: $orange1; }
+.rating-2 { background: $sepia1; }
+.rating-1 { background: $dark-gray5; }
+
+.rating-banner {
+  transform: rotate(-36deg);
+  display: block;
+  padding: 6px 45px;
+  font-weight: 400;
+  top: 14px;
+  position: absolute;
+  left: -46px;
+  color: #fff;
+  letter-spacing: 1px;
+  text-size-adjust: none;
+  font-size: .85714em;
+  line-height: 1.6em;
+  text-align: center;
 }

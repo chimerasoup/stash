@@ -27,12 +27,19 @@ export class Pagination extends React.Component<PaginationProps, PaginationState
     this.setPage(this.props.currentPage, false);
   }
 
+  componentDidUpdate(prevProps: PaginationProps) {
+    // console.log(this.props)
+    if (this.props.totalItems !== prevProps.totalItems || this.props.itemsPerPage !== prevProps.itemsPerPage) this.setPage(this.props.currentPage);
+  }
+
   private setPage(page: Maybe<number>, propagate: boolean = true) {
-    if (page === undefined || page < 1 || page > this.state.totalPages) {
-      return;
-    }
+    if (page === undefined) return;
 
     const pagerState = this.getPagerState(this.props.totalItems, page, this.props.itemsPerPage);
+
+    if (page < 1) page = 1;
+    if (page > pagerState.totalPages) page = pagerState.totalPages;
+
     this.setState(pagerState);
     if (propagate) this.props.onChangePage(page);
   }
@@ -72,7 +79,7 @@ export class Pagination extends React.Component<PaginationProps, PaginationState
     if (!this.state || !this.state.pages || this.state.pages.length <= 1) { return null; }
 
     return (
-      <ButtonGroup className="filter-container">
+      <ButtonGroup large={true} className="filter-container">
         <Button
           text="First"
           disabled={this.props.currentPage === 1}

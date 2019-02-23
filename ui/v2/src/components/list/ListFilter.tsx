@@ -84,6 +84,7 @@ export class ListFilter extends React.PureComponent<ListFilterProps, ListFilterS
 
   private onAddCriterion(Criterion: Criterion) {
     this.props.filter.criteria.push(Criterion);
+    this.props.filter.currentPage = 1;
     this.props.onChange(this.props.filter);
     this.forceUpdate();
   }
@@ -129,7 +130,7 @@ export class ListFilter extends React.PureComponent<ListFilterProps, ListFilterS
         </div>
         <div style={{display: 'flex', justifyContent: 'center', margin: '10px auto'}}>
           {this.props.filter.criteria.map(criterion => (
-            <Tag key={criterion.type} className="filter-item" itemID={criterion.type.toString()} onRemove={this.onRemoveTag.bind(this)}>
+            <Tag key={criterion.type} className="tag-item" itemID={criterion.type.toString()} onRemove={this.onRemoveTag.bind(this)}>
               {(CriterionType as any)[criterion.type]} with value {criterion.value}
             </Tag>
           ))}

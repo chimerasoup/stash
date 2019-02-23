@@ -46,7 +46,7 @@ export default class SceneList extends React.Component<SceneListProps, SceneList
   private async fetch() {
     const location = Object.assign({}, this.props.history.location);
     location.search = this.listState.filter.makeQueryParameters();
-    this.props.history.push(location);
+    this.props.history.replace(location);
 
 
 
