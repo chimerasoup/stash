@@ -1,6 +1,6 @@
 import ApolloClient, { ApolloQueryResult } from "apollo-boost";
 import * as GQL from "./generated-graphql";
-import { ListFilter } from "../models/list";
+import { ListFilterModel } from "../models/list-filter";
 
 class StashService {
   private client: ApolloClient<{}>
@@ -11,7 +11,7 @@ class StashService {
     });
   }
 
-  findScenes(filter: ListFilter): Promise<ApolloQueryResult<GQL.FindScenesQuery>> {
+  findScenes(filter: ListFilterModel): Promise<ApolloQueryResult<GQL.FindScenesQuery>> {
     let scene_filter = {};
     // if (!!filter && filter.criteriaFilterOpen) {
       scene_filter = filter.makeSceneFilter();

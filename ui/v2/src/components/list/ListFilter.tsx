@@ -21,14 +21,16 @@ import {
 } from "@blueprintjs/core";
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import { debounce } from 'lodash';
-import { ListFilter as Filter, Criteria, CriteriaType } from '../../models/list';
+import { ListFilterModel, Criterion, CriterionType } from '../../models/list-filter';
 import { AddFilter } from './AddFilter';
+import queryString from 'query-string';
+import { BaseProps } from '../../models/base-props';
 
-type ListFilterProps = {
+interface ListFilterProps {
   onChangePageSize: (pageSize: number) => void
   onChangeQuery: (query: string) => void
-  onChange: (filter: Filter) => void
-  filter: Filter
+  onChange: (filter: ListFilterModel) => void
+  filter: ListFilterModel
 }
 type ListFilterState = {}
 
@@ -80,8 +82,8 @@ export class ListFilter extends React.PureComponent<ListFilterProps, ListFilterS
     this.props.onChange(this.props.filter);
   }
 
-  private onAddCriteria(criteria: Criteria) {
-    this.props.filter.criterions.push(criteria);
+  private onAddCriterion(Criterion: Criterion) {
+    this.props.filter.criteria.push(Criterion);
     this.props.onChange(this.props.filter);
     this.forceUpdate();
   }
@@ -97,6 +99,7 @@ export class ListFilter extends React.PureComponent<ListFilterProps, ListFilterS
           <InputGroup
             large={true}
             placeholder="Search..."
+            defaultValue={this.props.filter.searchTerm}
             onChange={this.onChangeQuery.bind(this)}
             className="filter-item" />
           <HTMLSelect
@@ -122,12 +125,12 @@ export class ListFilter extends React.PureComponent<ListFilterProps, ListFilterS
             </Popover>
           </ControlGroup>
 
-          <AddFilter filter={this.props.filter} onAddCriteria={this.onAddCriteria.bind(this)} />
+          <AddFilter filter={this.props.filter} onAddCriterion={this.onAddCriterion.bind(this)} />
         </div>
         <div style={{display: 'flex', justifyContent: 'center', margin: '10px auto'}}>
-          {this.props.filter.criterions.map(criteria => (
-            <Tag className="filter-item" itemID={criteria.type.toString()} onRemove={this.onRemoveTag.bind(this)}>
-              {(CriteriaType as any)[criteria.type]} with value {criteria.value}
+          {this.props.filter.criteria.map(criterion => (
+            <Tag className="filter-item" itemID={criterion.type.toString()} onRemove={this.onRemoveTag.bind(this)}>
+              {(CriterionType as any)[criterion.type]} with value {criterion.value}
             </Tag>
           ))}
         </div>

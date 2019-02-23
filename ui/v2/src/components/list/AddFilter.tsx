@@ -16,33 +16,41 @@ import {
   Menu,
   MenuItem,
   Divider,
+  FormGroup,
 } from "@blueprintjs/core";
-import { ListFilter as Filter, CriteriaOption, Criteria, CriteriaType, DisplayMode, CriteriaValueType } from '../../models/list';
+import {
+  ListFilterModel,
+  CriterionOption,
+  Criterion,
+  CriterionType,
+  DisplayMode,
+  CriterionValueType
+} from '../../models/list-filter';
 
 type AddFilterProps = {
-  onAddCriteria: (criteria: Criteria) => void
-  filter: Filter
+  onAddCriterion: (criterion: Criterion) => void
+  filter: ListFilterModel
 }
 type AddFilterState = {}
 
-export class AddFilter extends React.PureComponent<AddFilterProps, AddFilterState> {
-  private criteriaType: CriteriaType = CriteriaType.None;
-  private criteria: Criteria = new Criteria();
+export class AddFilter extends React.Component<AddFilterProps, AddFilterState> {
+  private criterionType: CriterionType = CriterionType.None;
+  private criterion: Criterion = new Criterion();
 
   private async onChangedCriteriaType(event: React.ChangeEvent<HTMLSelectElement>) {
-    this.criteriaType = parseInt(event.target.value);
-    await this.criteria.configure(this.criteriaType);
+    this.criterionType = parseInt(event.target.value);
+    await this.criterion.configure(this.criterionType);
     this.forceUpdate();
   }
 
   private async onChangedSingleCriteriaValue(event: React.ChangeEvent<HTMLSelectElement>) {
-    this.criteria.value = event.target.value
+    this.criterion.value = event.target.value
   }
 
   private onAddFilter() {
-    this.props.onAddCriteria(this.criteria);
-    this.criteriaType = CriteriaType.None;
-    this.criteria = new Criteria();
+    this.props.onAddCriterion(this.criterion);
+    this.criterionType = CriterionType.None;
+    this.criterion = new Criterion();
     this.forceUpdate();
   }
 
@@ -50,27 +58,29 @@ export class AddFilter extends React.PureComponent<AddFilterProps, AddFilterStat
     return (
       <Popover position="bottom" className="filter-item">
         <Button large={true}>Filter</Button>
-        <div>
-          <div>
+        <div className={Classes.POPOVER_DISMISS}>
+          <FormGroup label="Filter">
             <HTMLSelect
               style={{flexBasis: 'min-content'}}
-              options={this.props.filter.criteriaOptions.map(option => (
-                {label: option.name, value: option.value}
-              ))}
-              onChange={this.onChangedCriteriaType.bind(this)} />
-          </div>
-          <div>
-            {this.criteriaType !== CriteriaType.None ? (
-              <HTMLSelect
-                options={this.criteria.options}
-                onChange={this.onChangedSingleCriteriaValue.bind(this)} />
-            ) : (
-              ""
-            )}
-          </div>
-          <div>
-          <Button onClick={this.onAddFilter.bind(this)}>Add Filter</Button>
-          </div>
+              options={this.props.filter.criterionOptions}
+              onChange={this.onChangedCriteriaType.bind(this)}
+              className={Classes.POPOVER_DISMISS_OVERRIDE} />
+          </FormGroup>
+          {this.criterionType !== CriterionType.None ? (
+            <>
+              <FormGroup>
+                <HTMLSelect
+                  options={this.criterion.options}
+                  onChange={this.onChangedSingleCriteriaValue.bind(this)}
+                  className={Classes.POPOVER_DISMISS_OVERRIDE} />
+              </FormGroup>
+              <div>
+                <Button onClick={this.onAddFilter.bind(this)}>Add Filter</Button>
+              </div>
+            </>
+          ) : (
+            ''
+          )}
         </div>
       </Popover>
     )

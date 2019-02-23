@@ -2,11 +2,13 @@ import React from 'react';
 import { SceneCard } from "./scene-card";
 import * as GQL from '../../core/generated-graphql';
 import { ListFilter } from '../list/ListFilter';
-import { SceneListState as ListState, ListFilter as Filter } from '../../models/list';
+import { SceneListState as ListState, ListFilterModel } from '../../models/list-filter';
 import { ApolloQueryResult } from 'apollo-boost';
 import { getStashService } from '../../core/StashService';
+import queryString from 'query-string';
+import { BaseProps } from '../../models/base-props';
 
-type SceneListProps = {}
+interface SceneListProps extends BaseProps {}
 type SceneListState = {
   data: ApolloQueryResult<GQL.FindScenesQuery>
 }
@@ -15,6 +17,8 @@ export default class SceneList extends React.Component<SceneListProps, SceneList
   private listState: ListState = new ListState();
 
   async componentDidMount() {
+    const queryParams = queryString.parse(this.props.location.search);
+    this.listState.filter.configureFromQueryParameters(queryParams);
     await this.fetch();
   }
 
@@ -28,12 +32,18 @@ export default class SceneList extends React.Component<SceneListProps, SceneList
     await this.fetch();
   }
 
-  private async onChangeFilter(filter: Filter) {
+  private async onChangeFilter(filter: ListFilterModel) {
     this.listState.filter = filter;
     await this.fetch();
   }
 
   private async fetch() {
+    const location = Object.assign({}, this.props.history.location);
+    location.search = this.listState.filter.makeQueryParameters();
+    this.props.history.push(location);
+
+
+
     const result = await getStashService().findScenes(this.listState.filter);
     this.setState({data: result});
   }
