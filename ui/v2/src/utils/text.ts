@@ -1,22 +1,14 @@
 import { Maybe } from "../models";
 
 export class TextUtils {
-  private static units = [
-    'bytes',
-    'kB',
-    'MB',
-    'GB',
-    'TB',
-    'PB'
-  ];
 
-  public static truncate(value: Maybe<string>, limit: number = 100, tail: string = '...'): string {
-    if (!value) return '';
+  public static truncate(value: Maybe<string>, limit: number = 100, tail: string = "..."): string {
+    if (!value) { return ""; }
     return value.length > limit ? value.substring(0, limit) + tail : value;
   }
 
   public static fileSize(bytes: number = 0, precision: number = 2): string {
-    if (isNaN(parseFloat(String(bytes))) || !isFinite(bytes)) { return '?'; }
+    if (isNaN(parseFloat(String(bytes))) || !isFinite(bytes)) { return "?"; }
 
     let unit = 0;
     while ( bytes >= 1024 ) {
@@ -24,7 +16,7 @@ export class TextUtils {
       unit++;
     }
 
-    return bytes.toFixed(+precision) + ' ' + this.units[unit];
+    return bytes.toFixed(+precision) + " " + this.units[unit];
   }
 
   public static secondsToTimestamp(seconds: number): string {
@@ -32,7 +24,15 @@ export class TextUtils {
   }
 
   public static fileNameFromPath(path: string): string {
-    if (!!path === false) { return 'No File Name'; }
-    return path.replace(/^.*[\\\/]/, '');
+    if (!!path === false) { return "No File Name"; }
+    return path.replace(/^.*[\\\/]/, "");
   }
+  private static units = [
+    "bytes",
+    "kB",
+    "MB",
+    "GB",
+    "TB",
+    "PB",
+  ];
 }

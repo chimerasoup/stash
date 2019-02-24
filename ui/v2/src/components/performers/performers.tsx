@@ -1,13 +1,13 @@
-import React from 'react'
-import { Switch, Route } from 'react-router-dom'
-import { PerformerList } from './performer-list'
-import { Performer } from './performer'
+import React from "react";
+import { Route, Switch } from "react-router-dom";
+import { Performer } from "./performer";
+import { PerformerList } from "./performer-list";
 
 const Performers = () => (
   <Switch>
-    <Route exact path='/performers' component={PerformerList} />
-    <Route path='/performers/:id' component={Performer} />
+    <Route exact={true} path="/performers" component={PerformerList} />
+    <Route path="/performers/:id" component={Performer} />
   </Switch>
-)
+);
 
-export default Performers
+export default Performers;

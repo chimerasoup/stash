@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Alignment,
   Button,
@@ -8,30 +7,26 @@ import {
   NavbarGroup,
   NavbarHeading,
 } from "@blueprintjs/core";
-import { BrowserRouter, Route, Link } from 'react-router-dom';
-import * as GQL from '../core/generated-graphql';
-import { getStashService } from '../core/StashService';
-import { ApolloQueryResult } from 'apollo-boost';
+import { ApolloQueryResult } from "apollo-boost";
+import React from "react";
+import { BrowserRouter, Link, Route } from "react-router-dom";
+import * as GQL from "../core/generated-graphql";
+import { getStashService } from "../core/StashService";
 
-type StatsProps = {}
-type StatsState = {
-  data: ApolloQueryResult<GQL.StatsQuery>
+interface StatsProps {}
+interface StatsState {
+  data: ApolloQueryResult<GQL.StatsQuery>;
 }
 
 export class Stats extends React.PureComponent<StatsProps, StatsState> {
-  async componentDidMount() {
+  public async componentDidMount() {
     await this.fetch();
   }
 
-  private async fetch() {
-    const result = await getStashService().stats();
-    this.setState({data: result});
-  }
-
   public render() {
-    if (!this.state) return '...';
+    if (!this.state) { return "..."; }
     const { loading, data, errors } = this.state.data;
-    if (errors || loading) return '...';
+    if (errors || loading) { return "..."; }
 
     return (
       <div>
@@ -39,5 +34,10 @@ export class Stats extends React.PureComponent<StatsProps, StatsState> {
         <span>Galleries {data.stats.gallery_count}</span>
       </div>
     );
+  }
+
+  private async fetch() {
+    const result = await getStashService().stats();
+    this.setState({data: result});
   }
 }

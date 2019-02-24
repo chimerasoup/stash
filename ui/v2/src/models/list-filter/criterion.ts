@@ -1,58 +1,58 @@
-import { CriterionValueType, CriterionType } from "./types";
 import { getStashService } from "../../core/StashService";
+import { CriterionType, CriterionValueType } from "./types";
 
-interface CriterionConfig {
+interface ICriterionConfig {
   valueType: CriterionValueType;
   parameterName: string;
   options: any[];
 }
 
 export class Criterion {
-  type: CriterionType = CriterionType.None;
-  valueType: CriterionValueType = CriterionValueType.Single;
-  options: any[] = [];
-  parameterName: string = '';
-  value: string = '';
-  values: string[] = [];
+  public type: CriterionType = CriterionType.None;
+  public valueType: CriterionValueType = CriterionValueType.Single;
+  public options: any[] = [];
+  public parameterName: string = "";
+  public value: string = "";
+  public values: string[] = [];
 
-  async configure(type: CriterionType) {
+  public async configure(type: CriterionType) {
     this.type = type;
 
-    let config: CriterionConfig = {
+    let config: ICriterionConfig = {
       valueType: CriterionValueType.Single,
-      parameterName: '',
-      options: []
+      parameterName: "",
+      options: [],
     };
 
     switch (type) {
       case CriterionType.Rating:
-        config.parameterName = 'rating';
+        config.parameterName = "rating";
         config.options = [1, 2, 3, 4, 5];
         break;
       case CriterionType.Resolution:
-        config.parameterName = 'resolution';
-        config.options = ['240p', '480p', '720p', '1080p', '4k'];
+        config.parameterName = "resolution";
+        config.options = ["240p", "480p", "720p", "1080p", "4k"];
         break;
       case CriterionType.Favorite:
-        config.parameterName = 'filter_favorites';
-        config.options = ['true', 'false'];
+        config.parameterName = "filter_favorites";
+        config.options = ["true", "false"];
         break;
       case CriterionType.HasMarkers:
-        config.parameterName = 'has_markers';
-        config.options = ['true', 'false'];
+        config.parameterName = "has_markers";
+        config.options = ["true", "false"];
         break;
       case CriterionType.IsMissing:
-        config.parameterName = 'is_missing';
-        config.options = ['title', 'url', 'date', 'gallery', 'studio', 'performers'];
+        config.parameterName = "is_missing";
+        config.options = ["title", "url", "date", "gallery", "studio", "performers"];
         break;
       case CriterionType.Tags:
-        config = await this.configureTags('tags');
+        config = await this.configureTags("tags");
         break;
       case CriterionType.SceneTags:
-        config = await this.configureTags('scene_tags');
+        config = await this.configureTags("scene_tags");
         break;
       case CriterionType.Performers:
-        config = await this.configurePerformers('performers');
+        config = await this.configurePerformers("performers");
         break;
       case CriterionType.None:
       default: break;
@@ -62,7 +62,7 @@ export class Criterion {
     this.parameterName = config.parameterName;
     this.options = config.options;
 
-    this.value = ''; // Need this or else we send invalid value to the new filter
+    this.value = ""; // Need this or else we send invalid value to the new filter
     // this.values = []; // TODO this seems to break the "Multiple" filters
   }
 
@@ -71,9 +71,9 @@ export class Criterion {
     return {
       valueType: CriterionValueType.Multiple,
       parameterName: name,
-      options: result.data.allTags.map(item => {
+      options: result.data.allTags.map((item) => {
         return { id: item.id, name: item.name };
-      })
+      }),
     };
   }
 
@@ -82,9 +82,9 @@ export class Criterion {
     return {
       valueType: CriterionValueType.Multiple,
       parameterName: name,
-      options: result.data.allPerformers.map(item => {
+      options: result.data.allPerformers.map((item) => {
         return { id: item.id, name: item.name, image_path: item.image_path };
-      })
+      }),
     };
   }
 }

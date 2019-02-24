@@ -1,13 +1,13 @@
-import React from 'react'
-import { Switch, Route } from 'react-router-dom'
-import SceneList from './scene-list'
-import { Scene } from './scene'
+import React from "react";
+import { Route, Switch } from "react-router-dom";
+import { Scene } from "./scene";
+import SceneList from "./scene-list";
 
 const Scenes = () => (
   <Switch>
-    <Route exact path='/scenes' component={SceneList} />
-    <Route path='/scenes/:id' component={Scene} />
+    <Route exact={true} path="/scenes" component={SceneList} />
+    <Route path="/scenes/:id" component={Scene} />
   </Switch>
-)
+);
 
-export default Scenes
+export default Scenes;

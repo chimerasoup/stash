@@ -28,6 +28,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint": "tslint -c ./tslint.json 'src/**/*.{ts,tsx}'",
+    "lint:fix": "tslint --fix -c ./tslint.json 'src/**/*.{ts,tsx}'",
     "gqlgen": "gql-gen --config codegen.yml"
   },
   "eslintConfig": {
@@ -46,6 +48,7 @@
     "graphql-codegen-typescript-react-apollo": "0.16.1",
     "graphql-codegen-time": "0.16.1",
     "tslint": "5.12.1",
+    "tslint-react": "3.6.0",
     "typescript": "3.3.3"
   }
 }

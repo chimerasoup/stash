@@ -1,20 +1,20 @@
 import {
-  SlimSceneDataFragment,
-  PerformerDataFragment,
-  StudioDataFragment,
   GalleryDataFragment,
+  PerformerDataFragment,
   SceneMarkerDataFragment,
-} from '../../core/generated-graphql';
-import { ListFilterModel } from './filter';
-import { FilterMode } from './types';
+  SlimSceneDataFragment,
+  StudioDataFragment,
+} from "../../core/generated-graphql";
+import { ListFilterModel } from "./filter";
+import { FilterMode } from "./types";
 
 export class ListState<T> {
-  totalCount: number = 0;
-  scrollY: number = 0;
-  filter: ListFilterModel = new ListFilterModel();
-  data: T[] = [];
+  public totalCount: number = 0;
+  public scrollY: number = 0;
+  public filter: ListFilterModel = new ListFilterModel();
+  public data: T[] = [];
 
-  reset() {
+  public reset() {
     this.data = [];
     this.totalCount = 0;
   }
