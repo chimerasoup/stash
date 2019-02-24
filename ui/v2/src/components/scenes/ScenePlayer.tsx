@@ -21,14 +21,14 @@ export class ScenePlayer extends React.Component<IScenePlayerProps, IScenePlayer
   }
 
   public render() {
-    const playlist = this.makeConfig(this.props.scene);
+    const config = this.makeConfig(this.props.scene);
     return (
       <>
         <div id="jwplayer-container">
           <ReactJWPlayer
             playerId={this.playerId}
             playerScript="https://content.jwplatform.com/libraries/QRX6Y71b.js"
-            customProps={playlist}
+            customProps={config}
             onReady={this.onReady}
           />
         </div>
@@ -91,7 +91,7 @@ export class ScenePlayer extends React.Component<IScenePlayerProps, IScenePlayer
       ],
       primary: "html5",
       autostart: false,
-      playbakRateControls: true,
+      playbackRateControls: true,
       playbackRates: [0.75, 1, 1.5, 2, 3, 4],
     };
   }

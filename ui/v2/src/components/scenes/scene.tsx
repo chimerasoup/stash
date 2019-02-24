@@ -44,12 +44,7 @@ export class Scene extends React.PureComponent<ISceneProps, ISceneState> {
 
     return (
       <>
-        <div id="jwplayer-container">
-          <ScenePlayer
-            scene={scene}
-            timestamp={this.timestamp}
-          />
-        </div>
+        <ScenePlayer scene={scene} timestamp={this.timestamp} />
         <h1 className="bp3-heading">{scene.title}</h1>
         {scene.path}
       </>
