@@ -62,7 +62,11 @@ video.preview {
 
 .bp3-popover-content {
   padding: 10px;
-  max-width: 33vw
+  max-width: 33vw;
+  min-width: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .filter-container {

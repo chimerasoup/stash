@@ -99,7 +99,7 @@ export class SceneCard extends React.PureComponent<ISceneCardProps, ISceneCardSt
       <Tag key={tag.id} className="tag-item">{tag.name}</Tag>
     ));
     return (
-      <Popover position="bottom">
+      <Popover interactionKind={"hover"} position="bottom">
         <Button
           icon="tag"
           text={this.props.scene.tags.length}
@@ -116,7 +116,7 @@ export class SceneCard extends React.PureComponent<ISceneCardProps, ISceneCardSt
       <Tag key={performer.id} className="tag-item">{performer.name}</Tag>
     ));
     return (
-      <Popover position="bottom">
+      <Popover interactionKind={"hover"} position="bottom">
         <Button
           icon="person"
           text={this.props.scene.performers.length}
@@ -133,7 +133,7 @@ export class SceneCard extends React.PureComponent<ISceneCardProps, ISceneCardSt
       <Tag key={marker.id} className="tag-item">{marker.title} - {TextUtils.secondsToTimestamp(marker.seconds)}</Tag>
     ));
     return (
-      <Popover position="bottom">
+      <Popover interactionKind={"hover"} position="bottom">
         <Button
           icon="map-marker"
           text={this.props.scene.scene_markers.length}
@@ -150,7 +150,7 @@ export class SceneCard extends React.PureComponent<ISceneCardProps, ISceneCardSt
       return (
         <>
           <Divider />
-          <ButtonGroup className="card-section centered">
+          <ButtonGroup minimal={true} className="card-section centered">
             {this.maybeRenderTagPopoverButton()}
             {this.maybeRenderPerformerPopoverButton()}
             {this.maybeRenderSceneMarkerPopoverButton()}
