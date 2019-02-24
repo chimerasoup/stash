@@ -20,6 +20,7 @@
     "react": "16.8.2",
     "react-apollo": "2.4.1",
     "react-dom": "16.8.2",
+    "react-jw-player": "1.19.0",
     "react-router-dom": "4.3.1",
     "react-scripts": "2.1.5"
   },

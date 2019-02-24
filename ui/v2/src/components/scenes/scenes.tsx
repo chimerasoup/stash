@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import { Scene } from "./scene";
+import { Scene } from "./Scene";
 import SceneList from "./scene-list";
 
 const Scenes = () => (
